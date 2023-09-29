@@ -1,7 +1,7 @@
 node{
     
     stage('Clone repo'){
-        git credentialsId: 'GIT-Credentials', url: 'https://github.com/ashokitschool/maven-web-app.git'
+        git credentialsId: 'GIT-Credentials', url: 'https://github.com/iam-mourya/maven-web-app.git'
     }
     
     stage('Maven Build'){
@@ -26,23 +26,23 @@ node{
 			]	
 		],
 		credentialsId: 'nexus3',
-		groupId: 'in.ashokit',
+		groupId: 'in.middleware',
 		nexusUrl: '',
 		protocol: 'http',
-		repository: 'ashokit-release'
+		repository: 'middleware-release'
 		version: '1.0.0'
 	}
 }
     
     stage('Build Image'){
-        sh 'docker build -t ashokit/mavenwebapp .'
+        sh 'docker build -t iam-mourya/mavenwebapp .'
     }
     
     stage('Push Image'){
         withCredentials([string(credentialsId: 'DOCKER-CREDENTIALS', variable: 'DOCKER_CREDENTIALS')]) {
-            sh 'docker login -u ashokit -p ${DOCKER_CREDENTIALS}'
+            sh 'docker login -u mourya -p ${DOCKER_CREDENTIALS}'
         }
-        sh 'docker push ashokit/mavenwebapp'
+        sh 'docker push mourya/mavenwebapp'
     }
     
     stage('Deploy App'){
